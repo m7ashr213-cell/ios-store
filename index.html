@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Store - Premium Apps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0A84FF;
+            --secondary-color: #5E5CE6;
+            --background-color: #1C1C1E;
+            --card-color: #2C2C2E;
+            --text-color: #F2F2F7;
+            --accent-color: #30D158;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --transition: all 0.3s ease;
+        }
+
+        .light-mode {
+            --primary-color: #007AFF;
+            --secondary-color: #5856D6;
+            --background-color: #F2F2F7;
+            --card-color: #FFFFFF;
+            --text-color: #1D1D1F;
+            --accent-color: #34C759;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            padding: 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--card-color);
+            box-shadow: var(--shadow);
+            border-radius: 16px;
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-color);
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp { color: #25D366; }
+        .instagram { color: #E4405F; }
+        .telegram { color: #0088CC; }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 25px 0;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Apps Section */
+        .apps-container {
+            background-color: var(--card-color);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .apps-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .apps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .app-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--background-color);
+            border-radius: 14px;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .app-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .app-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .app-icon.pro-badge::after {
+            content: "PRO";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            font-size: 8px;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 4px;
+            border: 1px solid #000;
+        }
+
+        .whatsapp-icon { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .instagram-icon { background: linear-gradient(135deg, #E4405F, #C13584); }
+        .telegram-icon { background: linear-gradient(135deg, #0088CC, #005888); }
+        .tiktok-icon { background: linear-gradient(135deg, #000000, #69C9D0); }
+        .capcut-icon { background: linear-gradient(135deg, #8B4513, #D2691E); }
+        .inshot-icon { background: linear-gradient(135deg, #FF6B6B, #FF8E53); }
+        .picsart-icon { background: linear-gradient(135deg, #6A11CB, #2575FC); }
+        .youtube-icon { background: linear-gradient(135deg, #FF0000, #CC0000); }
+        .spotify-icon { background: linear-gradient(135deg, #1DB954, #1ED760); }
+        .ioshome-icon { 
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ioshome-icon::before {
+            content: "🏠";
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .app-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .app-details p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+
+        .download-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .download-link:hover {
+            background-color: rgba(10, 132, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 25px 20px;
+            text-align: center;
+            background-color: var(--card-color);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .about-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        .about-section p {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .developer {
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 20px 0;
+            text-align: center;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        /* Welcome Modal - أصغر */
+        .welcome-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .welcome-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--card-color);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .welcome-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+        }
+
+        .modal-header p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-body p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            flex: 1;
+            justify-content: center;
+            min-width: 110px;
+        }
+
+        .contact-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+
+        .contact-telegram {
+            background-color: #0088CC;
+            color: white;
+        }
+
+        .contact-instagram {
+            background-color: #E4405F;
+            color: white;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: var(--text-color);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .header-content {
+                flex-direction: row;
+                gap: 10px;
+                padding: 12px 15px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .social-icons {
+                gap: 8px;
+            }
+
+            .social-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+                padding: 0 10px;
+            }
+
+            .apps-container {
+                padding: 18px;
+            }
+
+            .app-item {
+                flex-direction: row;
+                align-items: center;
+                padding: 12px;
+            }
+
+            .app-info {
+                gap: 12px;
+            }
+
+            .app-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+            }
+
+            .ioshome-icon::before {
+                font-size: 18px;
+            }
+
+            .app-details h3 {
+                font-size: 1rem;
+            }
+
+            .app-details p {
+                font-size: 0.8rem;
+            }
+
+            .download-link {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+
+            .modal-footer {
+                gap: 8px;
+            }
+
+            .contact-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo {
+                order: 1;
+            }
+            
+            .social-icons {
+                order: 2;
+            }
+            
+            .theme-toggle {
+                order: 3;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+
+            .app-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .app-info {
+                width: 100%;
+            }
+
+            .download-link {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Modal -->
+    <div class="welcome-modal active" id="welcomeModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h2>Welcome to iOS Store! 👋</h2>
+                <p>Your destination for premium iOS applications</p>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for visiting our store. We offer a curated selection of premium iOS apps with enhanced features.</p>
+                <p>Feel free to contact our developer if you have any questions or need assistance.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="https://wa.me/201019569018" class="contact-btn contact-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://t.me/h_moh_za" class="contact-btn contact-telegram" target="_blank">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+                <a href="https://instagram.com/mhamedashrf.0" class="contact-btn contact-instagram" target="_blank">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="logo-text">iOS Store</div>
+                </div>
+                
+                <div class="social-icons">
+                    <a href="https://wa.me/201019569018" class="social-icon whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/mhamedashrf.0" class="social-icon instagram" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://t.me/h_moh_za" class="social-icon telegram" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+                
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1>Welcome to iOS Store</h1>
+            <p>Discover premium and modified applications for iOS. All apps are free and regularly updated.</p>
+        </section>
+
+        <section class="apps-container">
+            <h2 class="apps-title">Available Applications</h2>
+            <div class="apps-list">
+                <!-- App 1 - WhatsApp -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon whatsapp-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>iOS WhatsApp</h3>
+                            <p>Enhanced messaging with additional features</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 2 - Instagram -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon instagram-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>iOS Instagram</h3>
+                            <p>Share moments with enhanced features</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 3 - Telegram -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon telegram-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>iOS Telegram</h3>
+                            <p>Fast and secure messaging with advanced features</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 4 - TikTok -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon tiktok-icon">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>iOS TikTok</h3>
+                            <p>Create and discover short videos with enhanced editing</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 5 - CapCut Pro -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon capcut-icon pro-badge">
+                            <i class="fas fa-scissors"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>CapCut Pro</h3>
+                            <p>Professional video editing with premium features unlocked</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 6 - InShot -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon inshot-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>InShot Pro</h3>
+                            <p>Professional video editing with no watermark</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 7 - Picsart -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon picsart-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>Picsart Pro</h3>
+                            <p>Comprehensive photo editing with all features unlocked</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 8 - YouTube -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon youtube-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>YouTube Premium</h3>
+                            <p>Ad-free videos, background play, and downloads</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 9 - Spotify -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon spotify-icon">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                        <div class="app-details">
+                            <h3>Spotify Premium</h3>
+                            <p>Ad-free music, unlimited skips, and offline downloads</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+
+                <!-- App 10 - iOS Home -->
+                <div class="app-item">
+                    <div class="app-info">
+                        <div class="app-icon ioshome-icon">
+                            <!-- بيت ايموجي في النص -->
+                        </div>
+                        <div class="app-details">
+                            <h3>iOS Home</h3>
+                            <p>Transform your phone interface to look like iPhone</p>
+                        </div>
+                    </div>
+                    <!-- ضع لينك التحميل هنا -->
+                    <a href="YOUR_DOWNLOAD_LINK_HERE" class="download-link">Get Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2>About iOS Store</h2>
+            <p>
+                iOS Store is your premier destination for getting the best modified and premium applications for iOS. 
+                We offer a variety of free apps with additional features not available in standard versions. 
+            </p>
+            <p>
+                We continuously work on updating applications to ensure compatibility with the latest iOS versions and provide the best user experience.
+            </p>
+            <p class="developer">Developer: Mohamed Ashraf</p>
+        </section>
+
+        <footer>
+            <p>© 2023 iOS Store. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // Welcome Modal
+        const welcomeModal = document.getElementById('welcomeModal');
+        const closeModal = document.getElementById('closeModal');
+        
+        // Close modal when X is clicked
+        closeModal.addEventListener('click', () => {
+            welcomeModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside content
+        welcomeModal.addEventListener('click', (e) => {
+            if (e.target === welcomeModal) {
+                welcomeModal.classList.remove('active');
+            }
+        });
+
+        // Auto close modal after 5 seconds
+        setTimeout(() => {
+            welcomeModal.classList.remove('active');
+        }, 5000);
+    </script>
+</body>
+</html>
